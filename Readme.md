@@ -101,12 +101,21 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 📬 Contact
+## � Team Members
+
+- **Sourav Lenka** (23cse115) - *Team Leader*
+- **Binita Swain** (23cse071)
+- **Biswajit Swain** (23cse168)
+- **Shivam Patro** (23cse198)
+
+---
+
+## �📬 Contact
 
 **Sourav Lenka** - [@SouravLenka](https://github.com/SouravLenka)
 
 Project Link: [https://github.com/SouravLenka/MindForge](https://github.com/SouravLenka/MindForge)
 
 <p align="center">
-  Built with ❤️ by the MindForge Team
+  Built by the MindForge Team
 </p>
