@@ -1,7 +1,7 @@
 # Vector store for RAG
 # backend/rag/vector_store.py
 
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 
 vector_store = None
 

@@ -1,7 +1,7 @@
 # Conversation memory for the backend
 # backend/memory/conversation_memory.py
 
-from langchain.memory import ConversationBufferMemory
+from langchain_classic.memory import ConversationBufferMemory
 
 
 class SessionMemory:

@@ -2,7 +2,7 @@
 # backend/routes/insight_routes.py
 
 from fastapi import APIRouter
-from insights.tracker import insight_tracker
+from backend.insights.tracker import insight_tracker
 
 router = APIRouter()
 
