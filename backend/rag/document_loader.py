@@ -1,7 +1,7 @@
 # Document loader for RAG
 # backend/rag/document_loader.py
 
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 
 
 def load_pdf(file_path: str):

@@ -1,7 +1,7 @@
 # Embedding model for RAG
 # backend/rag/embedding_model.py
 
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 
 def get_embedding_model():

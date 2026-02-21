@@ -3,9 +3,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes.chat_routes import router as chat_router
-from routes.upload_routes import router as upload_router
-from routes.insight_routes import router as insight_router
+from backend.routes.chat_routes import router as chat_router
+from backend.routes.upload_routes import router as upload_router
+from backend.routes.insight_routes import router as insight_router
 
 app = FastAPI(title="MindForge API")
 
