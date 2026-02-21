@@ -106,7 +106,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - **Sourav Lenka** (23cse115) - *Team Leader*
 - **Binita Swain** (23cse071)
 - **Biswajit Swain** (23cse168)
-- **Shivam Patro** (23cse198)
+- **Shivam Patro** (23cse192)
 
 ---
 
