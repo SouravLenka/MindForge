@@ -1,0 +1,1 @@
+# Embedding model for RAG
