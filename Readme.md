@@ -95,12 +95,6 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ---
 
-## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
 ## � Team Members
 
 - **Sourav Lenka** (23cse115) - *Team Leader*
@@ -108,14 +102,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - **Biswajit Swain** (23cse168)
 - **Shivam Patro** (23cse192)
 
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
 ---
-
-## �📬 Contact
-
-**Sourav Lenka** - [@SouravLenka](https://github.com/SouravLenka)
-
-Project Link: [https://github.com/SouravLenka/MindForge](https://github.com/SouravLenka/MindForge)
-
 <p align="center">
   Built by the MindForge Team
 </p>
