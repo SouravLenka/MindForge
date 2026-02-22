@@ -13,6 +13,7 @@
 - **Firebase Authentication**: Secure login via Google Sign-In with a modern Glassmorphism UI.
 - **Adaptive Explanations**: Choose between "Quick Answer" or "Step-by-Step" modes and adjust difficulty levels.
 - **Source Transparency**: Every response cites the specific syllabus document used as context.
+- **Speakout Feature**: Built-in Text-to-Speech (TTS) capability allowing users to listen to AI responses for an eyes-free learning experience.
 - **No Hallucinations**: Built-in logic to ensure the AI only answers based on provided syllabus materials.
 
 ---
@@ -85,5 +86,5 @@
 ---
 
 <p align="center">
-  Built with ❤️ by the MindForge Team
+  Built with by the MindForge Team
 </p>
