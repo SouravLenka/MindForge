@@ -1,7 +1,45 @@
+import { useState, useEffect } from 'react';
+
 export default function MessageBubble({ message }) {
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const isAssistant = message.role === 'assistant';
   const isSystem = message.role === 'system';
   const isUser = message.role === 'user';
+
+  // Cleanup speech on unmount
+  useEffect(() => {
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const speakText = (text) => {
+    if (!('speechSynthesis' in window)) return;
+
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      if (isSpeaking) {
+        setIsSpeaking(false);
+        return;
+      }
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const isSpeechSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
   return (
     <div className={`flex items-start gap-4 mb-8 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -23,12 +61,33 @@ export default function MessageBubble({ message }) {
 
       {/* Content */}
       <div className={`flex flex-col gap-2 max-w-[85%] ${isUser ? 'items-end' : 'items-start'}`}>
-        <div className={`glass-card px-6 py-5 ${
+        <div className={`glass-card px-6 py-5 relative group/bubble ${
           isUser 
             ? 'rounded-2xl rounded-tr-sm bg-purple-600/10 border-purple-500/20' 
             : 'rounded-2xl rounded-tl-sm'
         }`}>
           
+          {/* TTS Button (Assistant only) */}
+          {isAssistant && isSpeechSupported && (
+            <button
+              onClick={() => speakText(message.content)}
+              className={`absolute top-2 right-2 p-2 rounded-full transition-all duration-300 z-20 
+                ${isSpeaking 
+                  ? 'bg-purple-500/20 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)] animate-pulse' 
+                  : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white opacity-0 group-hover/bubble:opacity-100'
+                }`}
+              title={isSpeaking ? "Stop Speaking" : "Speak Out"}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isSpeaking ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                )}
+              </svg>
+            </button>
+          )}
+
           {/* Main Content */}
           <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">
             {message.content}

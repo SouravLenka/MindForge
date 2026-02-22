@@ -6,6 +6,13 @@
 
 **MindForge** is a next-generation framework designed to empower developers in building autonomous AI agents and intelligent workflows. It bridges the gap between raw compute and cognitive reasoning, providing a robust architecture for the future of decentralized intelligence.
 
+## � Team Members
+
+- **Sourav Lenka** (23cse115) - *Team Leader*
+- **Binita Swain** (23cse071)
+- **Biswajit Swain** (23cse168)
+- **Shivam Patro** (23cse192)
+
 ---
 
 ## 🚀 Key Features
@@ -95,12 +102,6 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ---
 
-## � Team Members
-
-- **Sourav Lenka** (23cse115) - *Team Leader*
-- **Binita Swain** (23cse071)
-- **Biswajit Swain** (23cse168)
-- **Shivam Patro** (23cse192)
 
 ## 📄 License
 
