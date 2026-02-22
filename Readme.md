@@ -7,7 +7,7 @@
 
 ## 📸 Dashboard Preview
 
-![MindForge Dashboard](mindforge-frontend/public/images/dashboard.png)
+![MindForge Dashboard](mindforge.jpg)
 
 ## 🚀 Key Features
 
