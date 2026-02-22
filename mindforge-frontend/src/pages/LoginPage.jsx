@@ -2,7 +2,6 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import GoogleButton from "../components/GoogleButton";
-import PhoneLogin from "../components/PhoneLogin";
 import "./Login.css";
 
 const LoginPage = () => {
@@ -54,14 +53,6 @@ const LoginPage = () => {
 
           <div className="space-y-6">
             <GoogleButton />
-
-            <div className="relative flex items-center py-2">
-              <div className="flex-grow border-t border-white/10"></div>
-              <span className="flex-shrink mx-4 text-xs font-medium text-white/40 uppercase">or</span>
-              <div className="flex-grow border-t border-white/10"></div>
-            </div>
-
-            <PhoneLogin />
           </div>
         </div>
 
