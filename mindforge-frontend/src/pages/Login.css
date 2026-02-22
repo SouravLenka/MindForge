@@ -1,0 +1,64 @@
+/* Scoped Styles for Login Page */
+
+.bg-mesh-gradient {
+  background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #0d0221 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(138, 43, 226, 0.15) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: move-waves-login 15s infinite linear;
+  filter: blur(80px);
+}
+
+.wave:nth-child(2) {
+  animation: move-waves-login 25s infinite linear reverse;
+  background: radial-gradient(ellipse at center, rgba(75, 0, 130, 0.2) 0%, transparent 70%);
+}
+
+@keyframes move-waves-login {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  border-color: #a855f7 !important;
+  outline: none;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
+.btn-purple-gradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-purple-gradient:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+  filter: brightness(1.1);
+}

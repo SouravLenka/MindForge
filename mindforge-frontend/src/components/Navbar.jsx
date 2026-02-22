@@ -1,5 +1,6 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const NavLink = ({ to, label }) => {
   const { pathname } = useLocation();
@@ -20,6 +21,24 @@ const NavLink = ({ to, label }) => {
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
+  const getUserInitial = () => {
+    if (user?.displayName) return user.displayName[0].toUpperCase();
+    if (user?.email) return user.email[0].toUpperCase();
+    if (user?.phoneNumber) return '#';
+    return 'U';
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center px-8 border-b border-card-border"
@@ -64,9 +83,27 @@ export default function Navbar() {
         </button>
         
         <div className="flex items-center gap-3 pl-5 border-l border-card-border">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-sm font-bold shadow-[0_0_15px_rgba(139,92,246,0.4)] border border-white/20">
-            S
-          </div>
+          {user?.photoURL ? (
+            <img 
+              src={user.photoURL} 
+              alt="User" 
+              className="w-9 h-9 rounded-full border border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.4)]"
+            />
+          ) : (
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-sm font-bold shadow-[0_0_15px_rgba(139,92,246,0.4)] border border-white/20">
+              {getUserInitial()}
+            </div>
+          )}
+          
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-full text-muted hover:text-red-400 hover:bg-red-500/10 transition-all duration-300"
+            title="Logout"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
         </div>
       </div>
     </nav>

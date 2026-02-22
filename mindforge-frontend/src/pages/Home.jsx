@@ -1,8 +1,17 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import FeatureCard from '../components/FeatureCard';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const getDisplayName = () => {
+    if (user?.displayName) return user.displayName;
+    if (user?.email) return user.email.split('@')[0];
+    if (user?.phoneNumber) return user.phoneNumber;
+    return 'Learner';
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden pt-20">
@@ -26,6 +35,9 @@ export default function Home() {
         <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-purple-600/5 blur-[120px]" />
         
         <div className="relative z-10">
+          <p className="text-purple-400 font-bold mb-4 tracking-loose">
+            Welcome back, {getDisplayName()}!
+          </p>
           <h1 className="text-6xl md:text-7xl font-extrabold text-foreground mb-4 tracking-tight leading-tight">
             Context-Aware
           </h1>
