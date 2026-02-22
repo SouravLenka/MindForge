@@ -1,4 +1,4 @@
-const MODES = ['Quick Answer', 'Step-by-Step', 'Example-Based'];
+const MODES = ['Quick Answer', 'Step-by-Step'];
 const LEVELS = ['Basic', 'Intermediate', 'Advanced'];
 
 export default function Sidebar({ mode, setMode, level, setLevel, uploadedFiles }) {
@@ -8,7 +8,7 @@ export default function Sidebar({ mode, setMode, level, setLevel, uploadedFiles 
         
         {/* Header */}
         <div>
-          <h2 className="text-[11px] font-bold text-slate-100 uppercase tracking-[0.2em] mb-1">Context Controls</h2>
+          <h2 className="text-[11px] font-bold text-foreground uppercase tracking-[0.2em] mb-1">Context Controls</h2>
           <div className="h-0.5 w-10 bg-purple-500/50 rounded-full" />
         </div>
 
@@ -22,8 +22,8 @@ export default function Sidebar({ mode, setMode, level, setLevel, uploadedFiles 
                 onClick={() => setMode(m)}
                 className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium border transition-all duration-300 ${
                   mode === m
-                    ? 'bg-purple-600/20 border-purple-500/40 text-white shadow-[0_0_15px_rgba(139,92,246,0.15)]'
-                    : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/10 hover:text-white'
+                    ? 'bg-purple-600/20 border-purple-500/40 text-purple-400 shadow-[0_0_15px_rgba(139,92,246,0.15)]'
+                    : 'bg-background/50 border-card-border text-muted hover:bg-white/10 hover:border-purple-500/20 hover:text-foreground'
                 }`}
               >
                 {m}
@@ -34,8 +34,8 @@ export default function Sidebar({ mode, setMode, level, setLevel, uploadedFiles 
 
         {/* Difficulty */}
         <div>
-          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 block">Difficulty</label>
-          <div className="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/5">
+          <label className="text-[10px] font-bold text-muted uppercase tracking-widest mb-3 block">Difficulty</label>
+          <div className="flex gap-2 p-1 bg-background/50 rounded-xl border border-card-border">
             {LEVELS.map((l) => (
               <button
                 key={l}
@@ -67,8 +67,8 @@ export default function Sidebar({ mode, setMode, level, setLevel, uploadedFiles 
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-slate-300 truncate font-medium">{file}</p>
-                    <p className="text-[10px] text-slate-500">PDF Document</p>
+                    <p className="text-xs text-foreground truncate font-medium">{file}</p>
+                    <p className="text-[10px] text-muted">PDF Document</p>
                   </div>
                 </div>
               ))

@@ -12,9 +12,9 @@ export default function Home() {
 
       {/* AI-Powered Badge */}
       <div className="relative z-10 mb-8 animate-float">
-        <div className="glass-card bg-white/5 border-white/10 px-4 py-1.5 flex items-center gap-2 rounded-full shadow-2xl">
+        <div className="glass-card bg-background/20 border-card-border px-4 py-1.5 flex items-center gap-2 rounded-full shadow-2xl">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-muted uppercase tracking-widest">
             AI-Powered Learning Assistant
           </span>
         </div>
@@ -26,14 +26,14 @@ export default function Home() {
         <div className="absolute top-0 left-1/4 w-1/2 h-1/2 bg-purple-600/5 blur-[120px]" />
         
         <div className="relative z-10">
-          <h1 className="text-6xl md:text-7xl font-extrabold text-white mb-4 tracking-tight leading-tight">
+          <h1 className="text-6xl md:text-7xl font-extrabold text-foreground mb-4 tracking-tight leading-tight">
             Context-Aware
           </h1>
           <h1 className="text-6xl md:text-7xl font-extrabold gradient-text mb-8 tracking-tight leading-tight">
             Doubt Resolution
           </h1>
           
-          <p className="text-slate-400 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="text-muted text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
             Syllabus-aligned. Source-grounded. No hallucinations. Get accurate answers backed by your own study materials.
           </p>
           

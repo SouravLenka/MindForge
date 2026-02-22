@@ -74,7 +74,7 @@ export default function MessageBubble({ message }) {
               className={`absolute top-2 right-2 p-2 rounded-full transition-all duration-300 z-20 
                 ${isSpeaking 
                   ? 'bg-purple-500/20 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.4)] animate-pulse' 
-                  : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white opacity-0 group-hover/bubble:opacity-100'
+                  : 'bg-background/20 text-muted hover:bg-white/10 hover:text-foreground opacity-0 group-hover/bubble:opacity-100'
                 }`}
               title={isSpeaking ? "Stop Speaking" : "Speak Out"}
             >
@@ -89,9 +89,15 @@ export default function MessageBubble({ message }) {
           )}
 
           {/* Main Content */}
-          <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap">
-            {message.content}
-          </div>
+          {isAssistant && (message.content.includes('+--') || message.content.includes('|') || message.content.includes('\\') || message.content.includes('/')) ? (
+            <pre className="font-mono whitespace-pre-wrap text-sm leading-relaxed text-foreground bg-background p-4 rounded-lg border border-card-border overflow-x-auto custom-scrollbar">
+              {message.content}
+            </pre>
+          ) : (
+            <div className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">
+              {message.content}
+            </div>
+          )}
 
           {/* Metadata for AI/System */}
           {(isAssistant || isSystem) && (
@@ -99,7 +105,7 @@ export default function MessageBubble({ message }) {
               {message.source && (
                 <div>
                   <p className="text-[10px] font-bold text-purple-400 uppercase tracking-widest mb-1">Source Context</p>
-                  <p className="text-slate-400 text-xs italic">{message.source}</p>
+                  <p className="text-muted text-xs italic">{message.source}</p>
                 </div>
               )}
               {message.limitation && (

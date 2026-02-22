@@ -119,7 +119,7 @@ export default function Chat() {
           <div className="max-w-4xl mx-auto">
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/30 to-blue-600/30 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition duration-500" />
-              <div className="relative glass-card bg-white/5 border-white/10 flex items-center gap-3 px-6 py-4 focus-within:border-purple-500/40 transition-all">
+              <div className="relative glass-card bg-background/50 border-card-border flex items-center gap-3 px-6 py-4 focus-within:border-purple-500/40 transition-all">
                 <input
                   ref={inputRef}
                   value={input}
@@ -127,7 +127,7 @@ export default function Chat() {
                   onKeyDown={handleKeyDown}
                   placeholder="Ask your doubt here..."
                   disabled={loading}
-                  className="flex-1 bg-transparent text-white text-sm placeholder-slate-500 focus:outline-none disabled:opacity-50"
+                  className="flex-1 bg-transparent text-foreground text-sm placeholder-muted focus:outline-none disabled:opacity-50"
                 />
                 <button
                   onClick={handleSend}
@@ -140,7 +140,7 @@ export default function Chat() {
                 </button>
               </div>
             </div>
-            <p className="text-center text-[10px] font-bold text-slate-600 uppercase tracking-widest mt-4">
+            <p className="text-center text-[10px] font-bold text-muted uppercase tracking-widest mt-4">
               Answers are grounded in indexed syllabus materials. Safe & Accurate.
             </p>
           </div>

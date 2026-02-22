@@ -44,8 +44,8 @@ export default function Upload() {
 
       {/* Header */}
       <div className="relative z-10 text-center mb-12">
-        <h2 className="text-4xl font-extrabold text-white mb-3 tracking-tight">Index Materials</h2>
-        <p className="text-slate-400 max-w-md mx-auto">
+        <h2 className="text-4xl font-extrabold text-foreground mb-3 tracking-tight">Index Materials</h2>
+        <p className="text-muted max-w-md mx-auto">
           Upload your syllabus or course material in PDF format to enable context-aware doubt resolution.
         </p>
       </div>
@@ -54,17 +54,17 @@ export default function Upload() {
         
         {/* Upload Card */}
         <div className="glass-card p-10 flex flex-col items-center text-center">
-          <div className={`w-20 h-20 rounded-2xl bg-white/5 border-2 border-dashed flex items-center justify-center mb-6 transition-all duration-500 ${
-            file ? 'border-purple-500/50 bg-purple-500/5 rotate-3' : 'border-white/10 group-hover:border-white/20'
+          <div className={`w-20 h-20 rounded-2xl bg-background/50 border-2 border-dashed flex items-center justify-center mb-6 transition-all duration-500 ${
+            file ? 'border-purple-500/50 bg-purple-500/5 rotate-3' : 'border-card-border group-hover:border-purple-500/20'
           }`}>
-            <svg className={`w-10 h-10 transition-colors ${file ? 'text-purple-400' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className={`w-10 h-10 transition-colors ${file ? 'text-purple-400' : 'text-muted'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
           </div>
 
           <label className="cursor-pointer group">
             <input type="file" className="hidden" accept=".pdf" onChange={handleFileChange} disabled={loading} />
-            <span className="bg-white/5 border border-white/10 group-hover:bg-white/10 group-hover:border-white/20 text-white px-8 py-3 rounded-full font-bold text-sm transition-all shadow-xl">
+            <span className="bg-background/50 border border-card-border group-hover:bg-white/10 group-hover:border-purple-500/20 text-foreground px-8 py-3 rounded-full font-bold text-sm transition-all shadow-xl">
               {file ? 'Change Selection' : 'Choose PDF File'}
             </span>
           </label>
@@ -107,7 +107,7 @@ export default function Upload() {
 
         {/* Index List */}
         <div className="glass-card p-10">
-          <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6 px-1">Indexed in Current Session</h3>
+          <h3 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-1">Indexed in Current Session</h3>
           <div className="space-y-3">
             {sessionFiles.length === 0 ? (
               <p className="text-xs text-slate-600 italic px-1">No files indexed in this session.</p>

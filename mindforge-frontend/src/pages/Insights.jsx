@@ -38,8 +38,8 @@ export default function Insights() {
 
       {/* Header */}
       <div className="relative z-10 max-w-4xl mx-auto mb-16 text-center">
-        <h2 className="text-5xl font-extrabold text-white mb-4 tracking-tight">Session Intelligence</h2>
-        <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+        <h2 className="text-5xl font-extrabold text-foreground mb-4 tracking-tight">Session Intelligence</h2>
+        <p className="text-muted text-lg max-w-2xl mx-auto">
           High-fidelity metrics tracking your interaction with MindForge AI.
         </p>
       </div>
@@ -51,8 +51,8 @@ export default function Insights() {
           {/* Total Questions Hero Card */}
           <div className="glass-card p-10 flex flex-col items-center justify-center text-center group relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all duration-700" />
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4">Total Interactions</p>
-            <h3 className="text-8xl font-black text-white group-hover:scale-110 transition-transform duration-500 tracking-tighter">
+            <p className="text-[11px] font-bold text-muted uppercase tracking-[0.2em] mb-4">Total Interactions</p>
+            <h3 className="text-8xl font-black text-foreground group-hover:scale-110 transition-transform duration-500 tracking-tighter">
               {data?.total_questions || 0}
             </h3>
             <div className="mt-8 px-6 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[11px] font-bold uppercase tracking-[0.1em]">
@@ -63,10 +63,10 @@ export default function Insights() {
           {/* System Status Card */}
           <div className="glass-card p-10 flex flex-col items-center justify-center text-center group relative overflow-hidden">
              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all duration-700" />
-            <p className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-4">Core Engine Status</p>
+            <p className="text-[11px] font-bold text-muted uppercase tracking-[0.2em] mb-4">Core Engine Status</p>
             <div className="flex items-center gap-4">
               <div className="w-4 h-4 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
-              <h3 className="text-6xl font-black text-white group-hover:tracking-wider transition-all duration-500 uppercase">
+              <h3 className="text-6xl font-black text-foreground group-hover:tracking-wider transition-all duration-500 uppercase">
                 Active
               </h3>
             </div>
@@ -80,11 +80,11 @@ export default function Insights() {
         <div className="glass-card p-12">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] flex items-center gap-3">
+              <h4 className="text-xs font-bold text-muted uppercase tracking-[0.2em] flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-blue-500" />
                 Explanation Modalities
               </h4>
-              <p className="text-[11px] text-slate-500 mt-1 uppercase tracking-widest font-bold">Frequency distribution of selected modes</p>
+              <p className="text-[11px] text-muted mt-1 uppercase tracking-widest font-bold">Frequency distribution of selected modes</p>
             </div>
           </div>
 
