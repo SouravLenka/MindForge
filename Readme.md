@@ -7,7 +7,7 @@
 
 ## 📸 Dashboard Preview
 
-![MindForge Dashboard](mindforge.jpg)
+![MindForge Chat](mindforge.jpg)
 
 ## 🚀 Key Features
 
