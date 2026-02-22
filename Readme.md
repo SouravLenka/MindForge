@@ -2,7 +2,7 @@
 
 **MindForge** is an AI-powered learning assistant that provides context-aware doubt resolution. It allows students to upload their syllabus and course materials, then interacts with them using a grounded RAG (Retrieval-Augmented Generation) system to ensure accurate, hallucination-free answers.
 
-## 📸 Dashboard Preview
+## 📸 Chatbot Preview
 
 ![MindForge Dashboard](mindforge.jpg)
 
