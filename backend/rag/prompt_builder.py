@@ -41,7 +41,7 @@ If Level is "Advanced":
 
 DIAGRAM_PROMPT = """
 If the user requests a diagram:
-- Generate a clean ASCII diagram.
+- Generate a clean ASCII diagram (e.g., using +----+ boxes for steps).
 - Choose a diagram layout that matches the real-world structural representation of the concept.
 - Do NOT default to vertical box flow unless the concept is strictly linear.
 - Ensure spatial alignment reflects conceptual structure.

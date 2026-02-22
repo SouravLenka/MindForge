@@ -42,7 +42,7 @@ def ask_question(payload: QuestionRequest):
 
         if not docs:
             return {
-                "answer": "This topic is not covered in the provided syllabus materials. Please consult your instructor.",
+                "answer": "This topic is not covered in the provided syllabus materials./n Please take the help of external resources.",
                 "source": "N/A",
                 "limitation": "This answer is based only on the uploaded syllabus materials."
             }
