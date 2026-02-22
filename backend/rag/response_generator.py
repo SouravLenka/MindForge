@@ -14,7 +14,7 @@ def generate_response(prompt: str):
     completion = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[
-            {"role": "system", "content": "You are a syllabus-aware AI tutor."},
+            {"role": "system", "content": "You are a multilingual syllabus-aware AI tutor."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.2,

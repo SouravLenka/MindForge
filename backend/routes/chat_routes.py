@@ -20,6 +20,7 @@ class QuestionRequest(BaseModel):
     question: str
     explanation_mode: str
     difficulty_level: str
+    language: str = "English"
 
 
 @router.post("/")
@@ -68,6 +69,7 @@ def ask_question(payload: QuestionRequest):
             question=payload.question,
             explanation_mode=payload.explanation_mode,
             difficulty_level=payload.difficulty_level,
+            language=payload.language,
             chat_history=chat_history,
         )
 

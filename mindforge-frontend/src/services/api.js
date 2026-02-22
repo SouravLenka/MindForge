@@ -46,11 +46,12 @@ export const uploadPDF = async (file) => {
   return response.data;
 };
 
-export const askQuestion = async (question, explanationMode, difficultyLevel) => {
+export const askQuestion = async (question, explanationMode, difficultyLevel, language) => {
   const response = await api.post('/ask/', {
     question,
     explanation_mode: explanationMode,
     difficulty_level: difficultyLevel,
+    language,
   });
   return response.data;
 };

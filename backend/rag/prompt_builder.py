@@ -86,7 +86,7 @@ def detect_diagram_type(question):
     return "GENERIC"
 
 
-def build_prompt(context, question, explanation_mode, difficulty_level, chat_history):
+def build_prompt(context, question, explanation_mode, difficulty_level, language, chat_history):
     diagram_keywords = [
         "draw",
         "diagram",
@@ -100,11 +100,24 @@ def build_prompt(context, question, explanation_mode, difficulty_level, chat_his
     is_diagram_request = any(word in question.lower() for word in diagram_keywords)
     diagram_type = detect_diagram_type(question) if is_diagram_request else None
     
-    active_system_prompt = SYSTEM_PROMPT
+    active_system_prompt = f"""
+You are a multilingual syllabus-aware AI learning assistant.
+[STRICT LANGUAGE RULE]
+- Generate the entire response EXCLUSIVELY in {language}. 
+- Translate all explanations, labels, and limitation statements into {language}.
+- Do NOT mix languages. Do NOT respond in English unless {language} is English.
+- Technical formulas and standard symbols remain unchanged.
+
+{SYSTEM_PROMPT}
+"""
     if is_diagram_request:
         active_system_prompt += DIAGRAM_PROMPT
 
     diagram_section = f"Diagram Structure Type: {diagram_type}" if diagram_type else ""
+
+    hallucination_message = "This topic is not covered in the provided syllabus materials. Please consult your instructor."
+    if language.lower() != "english":
+        hallucination_message = f"Answer exactly in {language} that this topic is not covered in the provided syllabus materials and to consult the instructor."
 
     return f"""
 {active_system_prompt}
@@ -112,6 +125,7 @@ def build_prompt(context, question, explanation_mode, difficulty_level, chat_his
 {diagram_section}
 Explanation Mode: {explanation_mode}
 Difficulty Level: {difficulty_level}
+Selected Language: {language}
 
 Chat History:
 {chat_history}
@@ -123,5 +137,5 @@ Question:
 {question}
 
 If the answer is not found in the context, respond exactly:
-"This topic is not covered in the provided syllabus materials. Please consult your instructor."
+{hallucination_message}
 """

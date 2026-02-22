@@ -15,10 +15,11 @@ export default function Chat() {
   const [messages, setMessages] = useState([INITIAL_MESSAGE]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Context State
   const [mode, setMode] = useState('Step-by-Step');
   const [level, setLevel] = useState('Intermediate');
+  const [language, setLanguage] = useState('English');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [error, setError] = useState('');
 
@@ -51,7 +52,7 @@ export default function Chat() {
     setLoading(true);
 
     try {
-      const data = await askQuestion(q, mode, level);
+      const data = await askQuestion(q, mode, level, language);
       setMessages((prev) => [
         ...prev,
         {
@@ -85,13 +86,14 @@ export default function Chat() {
         <Sidebar
           mode={mode} setMode={setMode}
           level={level} setLevel={setLevel}
+          language={language} setLanguage={setLanguage}
           uploadedFiles={uploadedFiles}
         />
       </div>
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden relative z-10">
-        
+
         {/* Messages Container */}
         <div className="flex-1 overflow-y-auto custom-scrollbar px-6 py-8">
           <div className="max-w-4xl mx-auto">
