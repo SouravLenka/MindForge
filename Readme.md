@@ -35,34 +35,46 @@
 
 ---
 
-## 📥 Installation
+## 📥 Installation & Setup
 
-### Prerequisites
+Follow these steps to get a local copy of MindForge up and running.
 
-- Python 3.10+
-- Node.js 18+
-- Groq API Key
+### 📋 Prerequisites
 
-### Setup
+- **Python 3.10+** (for the Backend)
+- **Node.js 18+** & **npm** (for the Frontend)
+- **Groq API Key** (Get it from [Groq Cloud](https://console.groq.com/))
+- **Firebase Project** (Optional, for your own Auth keys)
 
-1. **Clone the repository**:
+---
+
+### 🔧 Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/SouravLenka/MindForge.git
+cd MindForge
+```
+
+### 🐍 Step 2: Backend Setup (Python)
+
+The backend handles the RAG logic and PDF processing.
+
+1. **Create and activate a Virtual Environment**:
 
    ```bash
-   git clone https://github.com/SouravLenka/MindForge.git
-   cd MindForge
+   # Create venv
+   python -m venv venv
+
+   # Activate venv (Windows)
+   .\venv\Scripts\activate
+   # Activate venv (Mac/Linux)
+   source venv/bin/activate
    ```
 
-2. **Backend Setup**:
+2. **Install Dependencies**:
 
    ```bash
-   # Create and activate virtual environment
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-   # Install dependencies
    pip install -r requirements.txt
-
-   # Setup .env file with your GROQ_API_KEY
    # Run the server
    python -m uvicorn backend.main:app --reload
    ```
