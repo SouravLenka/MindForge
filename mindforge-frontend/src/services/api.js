@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// In production (Render), VITE_API_URL points directly to the FastAPI service.
-// During local development, the existing /api path can still be used with a Vite proxy.
+// Vercel provides VITE_API_URL in production. Keep /api as the local fallback.
 const apiBaseUrl = import.meta.env.VITE_API_URL || '/api';
 
 const api = axios.create({
@@ -9,13 +8,11 @@ const api = axios.create({
   timeout: 60000,
 });
 
-// Request interceptor
 api.interceptors.request.use(
   (config) => config,
   (error) => Promise.reject(error)
 );
 
-// Response interceptor
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -29,15 +26,15 @@ function getFriendlyError(error) {
     const detail = error.message || 'Check your internet or firewall';
     return `Cannot connect to MindForge server (${detail}). Please ensure the backend is running.`;
   }
-  
+
   const serverMsg = error.response.data?.detail;
-  
+
   switch (error.response.status) {
     case 400: return serverMsg || 'Invalid request. Please check your input.';
     case 404: return 'Resource not found.';
     case 422: return 'Please upload a PDF before asking questions.';
     case 500: return serverMsg || 'Backend processing error. Try a different PDF.';
-    default:  return 'Something went wrong. Please try again.';
+    default: return 'Something went wrong. Please try again.';
   }
 }
 
