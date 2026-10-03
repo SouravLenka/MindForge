@@ -9,8 +9,8 @@ from backend.routes.insight_routes import router as insight_router
 
 app = FastAPI(title="MindForge API")
 
-# Render serves the backend and frontend from different origins, so the
-# frontend origin is configurable through the FRONTEND_URL environment variable.
+# The frontend is hosted separately on Vercel. Keep the explicit frontend URL
+# configurable, while also allowing Vercel preview/production subdomains.
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
 allowed_origins = [
     origin.strip().rstrip("/")
@@ -21,6 +21,7 @@ allowed_origins = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=r"https://([a-zA-Z0-9-]+\.)*vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
