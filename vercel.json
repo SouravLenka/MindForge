@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "cd mindforge-frontend && npm install && npm run build",
+  "outputDirectory": "mindforge-frontend/dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
