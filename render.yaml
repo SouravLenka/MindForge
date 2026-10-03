@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: mindforge-backend
+    runtime: python
+    region: singapore
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
+      - key: FRONTEND_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+
+  - type: web
+    name: mindforge-frontend
+    runtime: static
+    region: singapore
+    plan: free
+    branch: main
+    rootDir: mindforge-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
