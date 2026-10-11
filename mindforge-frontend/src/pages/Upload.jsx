@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { uploadPDF } from '../services/api';
 
+const isPdfFile = (file) => {
+  if (!file) return false;
+  // Some browsers and filesystems provide an empty or non-standard MIME type.
+  // Accept by the .pdf extension as a fallback, then validate the PDF content
+  // again on the backend before processing it.
+  return file.type === 'application/pdf' || file.name?.toLowerCase().endsWith('.pdf');
+};
+
 export default function Upload() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -8,29 +16,32 @@ export default function Upload() {
   const [sessionFiles, setSessionFiles] = useState([]);
 
   const handleFileChange = (e) => {
-    const selected = e.target.files[0];
-    if (selected && selected.type === 'application/pdf') {
+    const selected = e.target.files?.[0];
+    if (isPdfFile(selected)) {
       setFile(selected);
       setMessage({ text: '', type: '' });
     } else {
-      setMessage({ text: 'Please select a valid PDF file.', type: 'error' });
+      setFile(null);
+      setMessage({ text: 'Please select a valid PDF file (.pdf).', type: 'error' });
     }
+    // Let the user pick the same file again after an error.
+    e.target.value = '';
   };
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file || loading) return;
 
     setLoading(true);
-    setMessage({ text: 'Indexing your document... This may take a moment.', type: 'info' });
+    setMessage({ text: 'Uploading and indexing your document. This may take a few minutes on a cold backend...', type: 'info' });
 
     try {
       const data = await uploadPDF(file);
       setMessage({ text: data.message || 'File uploaded and indexed successfully!', type: 'success' });
-      setSessionFiles((prev) => [file.name, ...prev]);
+      setSessionFiles((prev) => [file.name, ...prev.filter((name) => name !== file.name)]);
       setFile(null);
     } catch (err) {
       setMessage({
-        text: err.friendlyMessage || 'Upload failed. Please check your connection.',
+        text: err.friendlyMessage || err.response?.data?.detail || 'Upload failed. Please check the backend logs.',
         type: 'error',
       });
     } finally {
@@ -42,7 +53,6 @@ export default function Upload() {
     <div className="min-h-screen pt-24 pb-20 px-6 relative overflow-hidden flex flex-col items-center">
       <div className="background-aurora" />
 
-      {/* Header */}
       <div className="relative z-10 text-center mb-12">
         <h2 className="text-4xl font-extrabold text-foreground mb-3 tracking-tight">Index Materials</h2>
         <p className="text-muted max-w-md mx-auto">
@@ -51,8 +61,6 @@ export default function Upload() {
       </div>
 
       <div className="relative z-10 w-full max-w-2xl grid grid-cols-1 gap-8">
-        
-        {/* Upload Card */}
         <div className="glass-card p-10 flex flex-col items-center text-center">
           <div className={`w-20 h-20 rounded-2xl bg-background/50 border-2 border-dashed flex items-center justify-center mb-6 transition-all duration-500 ${
             file ? 'border-purple-500/50 bg-purple-500/5 rotate-3' : 'border-card-border group-hover:border-purple-500/20'
@@ -63,7 +71,7 @@ export default function Upload() {
           </div>
 
           <label className="cursor-pointer group">
-            <input type="file" className="hidden" accept=".pdf" onChange={handleFileChange} disabled={loading} />
+            <input type="file" className="hidden" accept=".pdf,application/pdf" onChange={handleFileChange} disabled={loading} />
             <span className="bg-background/50 border border-card-border group-hover:bg-white/10 group-hover:border-purple-500/20 text-foreground px-8 py-3 rounded-full font-bold text-sm transition-all shadow-xl">
               {file ? 'Change Selection' : 'Choose PDF File'}
             </span>
@@ -82,7 +90,7 @@ export default function Upload() {
                 {loading && (
                   <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l2-2.647z"></path>
                   </svg>
                 )}
                 {loading ? 'Indexing...' : 'Start Indexing'}
@@ -90,9 +98,8 @@ export default function Upload() {
             </div>
           )}
 
-          {/* Toast / Status Message */}
           {message.text && (
-            <div className={`mt-8 px-6 py-3 rounded-xl text-sm font-medium border flex items-center gap-3 animate-aurora ${
+            <div role={message.type === 'error' ? 'alert' : 'status'} className={`mt-8 px-6 py-3 rounded-xl text-sm font-medium border flex items-center gap-3 animate-aurora ${
               message.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
               message.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300' :
               'bg-blue-500/10 border-blue-500/20 text-blue-300'
@@ -105,7 +112,6 @@ export default function Upload() {
           )}
         </div>
 
-        {/* Index List */}
         <div className="glass-card p-10">
           <h3 className="text-xs font-bold text-muted uppercase tracking-widest mb-6 px-1">Indexed in Current Session</h3>
           <div className="space-y-3">
@@ -113,7 +119,7 @@ export default function Upload() {
               <p className="text-xs text-slate-600 italic px-1">No files indexed in this session.</p>
             ) : (
               sessionFiles.map((name, i) => (
-                <div key={i} className="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-2xl group hover:bg-white/10 transition-all">
+                <div key={name + i} className="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-2xl group hover:bg-white/10 transition-all">
                   <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -128,9 +134,7 @@ export default function Upload() {
             )}
           </div>
         </div>
-
       </div>
-
     </div>
   );
 }
