@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-// Vercel provides VITE_API_URL in production. Keep /api as the local fallback.
+// VITE_API_URL is configured on the hosting provider. Keep /api as the local fallback.
 const apiBaseUrl = import.meta.env.VITE_API_URL || '/api';
 
+// PDF parsing and the first embedding-model download can be slow on a cold free-tier backend.
 const api = axios.create({
   baseURL: apiBaseUrl.replace(/\/$/, ''),
-  timeout: 60000,
+  timeout: 180000,
 });
 
 api.interceptors.request.use(
@@ -23,8 +24,10 @@ api.interceptors.response.use(
 
 function getFriendlyError(error) {
   if (!error.response) {
-    const detail = error.message || 'Check your internet or firewall';
-    return `Cannot connect to MindForge server (${detail}). Please ensure the backend is running.`;
+    const detail = error.code === 'ECONNABORTED'
+      ? 'The request took longer than 3 minutes'
+      : (error.message || 'Check your internet or firewall');
+    return `Cannot complete the MindForge server request (${detail}). The backend may still be starting or processing the PDF. Please check the backend logs before retrying.`;
   }
 
   const serverMsg = error.response.data?.detail;
