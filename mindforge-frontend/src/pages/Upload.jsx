@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { uploadPDF } from '../services/api';
+import { uploadPDF, getIndexingStatus } from '../services/api';
 
-const isPdfFile = (file) => {
-  if (!file) return false;
-  // Some browsers and filesystems provide an empty or non-standard MIME type.
-  // Accept by the .pdf extension as a fallback, then validate the PDF content
-  // again on the backend before processing it.
-  return file.type === 'application/pdf' || file.name?.toLowerCase().endsWith('.pdf');
-};
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const isPdfFile = (file) => Boolean(
+  file && (file.type === 'application/pdf' || file.name?.toLowerCase().endsWith('.pdf'))
+);
 
 export default function Upload() {
   const [file, setFile] = useState(null);
@@ -15,8 +13,8 @@ export default function Upload() {
   const [message, setMessage] = useState({ text: '', type: '' });
   const [sessionFiles, setSessionFiles] = useState([]);
 
-  const handleFileChange = (e) => {
-    const selected = e.target.files?.[0];
+  const handleFileChange = (event) => {
+    const selected = event.target.files?.[0];
     if (isPdfFile(selected)) {
       setFile(selected);
       setMessage({ text: '', type: '' });
@@ -24,24 +22,51 @@ export default function Upload() {
       setFile(null);
       setMessage({ text: 'Please select a valid PDF file (.pdf).', type: 'error' });
     }
-    // Let the user pick the same file again after an error.
-    e.target.value = '';
+    event.target.value = '';
   };
 
   const handleUpload = async () => {
     if (!file || loading) return;
 
+    const selectedFile = file;
     setLoading(true);
-    setMessage({ text: 'Uploading and indexing your document. The first upload can take a few minutes while the backend initializes the embedding model...', type: 'info' });
+    setMessage({ text: 'Uploading your PDF...', type: 'info' });
 
     try {
-      const data = await uploadPDF(file);
-      setMessage({ text: data.message || 'File uploaded and indexed successfully!', type: 'success' });
-      setSessionFiles((prev) => [file.name, ...prev.filter((name) => name !== file.name)]);
-      setFile(null);
-    } catch (err) {
+      const job = await uploadPDF(selectedFile);
+      if (!job.job_id) throw new Error('The server did not return an indexing job ID.');
+
+      // Indexing runs as a backend background task, so the upload request can
+      // return quickly instead of timing out while the embedding model loads.
+      const maxPolls = 600; // 20 minutes at a 2-second interval.
+      for (let attempt = 0; attempt < maxPolls; attempt += 1) {
+        await sleep(2000);
+        const status = await getIndexingStatus(job.job_id);
+
+        if (status.status === 'completed') {
+          setMessage({ text: status.message || 'PDF indexed successfully!', type: 'success' });
+          setSessionFiles((previous) => [
+            selectedFile.name,
+            ...previous.filter((name) => name !== selectedFile.name),
+          ]);
+          setFile(null);
+          return;
+        }
+
+        if (status.status === 'failed') {
+          throw new Error(status.message || 'PDF indexing failed.');
+        }
+
+        setMessage({
+          text: status.message || 'Your PDF is being indexed. The first run may take a few minutes while the embedding model downloads.',
+          type: 'info',
+        });
+      }
+
+      throw new Error('Indexing is taking longer than expected. Check the backend logs before uploading the file again.');
+    } catch (error) {
       setMessage({
-        text: err.friendlyMessage || err.response?.data?.detail || 'Upload failed. Please check the backend logs.',
+        text: error.friendlyMessage || error.message || 'Upload failed. Please check the backend logs.',
         type: 'error',
       });
     } finally {
@@ -90,7 +115,7 @@ export default function Upload() {
                 {loading && (
                   <svg className="animate-spin h-4 w-4 shrink-0 text-white" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l2-2.647z"></path>
+                    <path className="opacity-75" strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                   </svg>
                 )}
                 <span className="break-words">{loading ? 'Indexing...' : 'Start Indexing'}</span>
@@ -99,7 +124,7 @@ export default function Upload() {
           )}
 
           {message.text && (
-            <div role={message.type === 'error' ? 'alert' : 'status'} aria-live="polite" className={`mt-8 w-full max-w-full min-w-0 box-border px-4 sm:px-6 py-4 rounded-xl text-sm leading-relaxed font-medium border flex items-start gap-3 text-left whitespace-normal break-words [overflow-wrap:anywhere] ${ 
+            <div role={message.type === 'error' ? 'alert' : 'status'} aria-live="polite" className={`mt-8 w-full max-w-full min-w-0 box-border px-4 sm:px-6 py-4 rounded-xl text-sm leading-relaxed font-medium border flex items-start gap-3 text-left whitespace-normal break-words [overflow-wrap:anywhere] ${
               message.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-400' :
               message.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300' :
               'bg-blue-500/10 border-blue-500/20 text-blue-300'
@@ -118,8 +143,8 @@ export default function Upload() {
             {sessionFiles.length === 0 ? (
               <p className="text-xs text-slate-600 italic px-1">No files indexed in this session.</p>
             ) : (
-              sessionFiles.map((name, i) => (
-                <div key={name + i} className="flex min-w-0 items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-2xl group hover:bg-white/10 transition-all">
+              sessionFiles.map((name, index) => (
+                <div key={name + index} className="flex min-w-0 items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-2xl group hover:bg-white/10 transition-all">
                   <div className="w-10 h-10 shrink-0 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
